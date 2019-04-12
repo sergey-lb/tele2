@@ -1,4 +1,4 @@
-[![Build Status]]
-[![codecov]]
+[![Build Status](https://travis-ci.org/sergey-lb/tele2.svg?branch=master)](https://travis-ci.org/sergey-lb/tele2)
+[![codecov](https://codecov.io/gh/sergey-lb/tele2/branch/master/graph/badge.svg)](https://codecov.io/gh/sergey-lb/tele2)
 
-# Empty Project
+# Tele2 Project

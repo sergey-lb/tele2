@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>{% if status == 'actual' %}Тарифы{% else %}Архивные тарифы{% endif %}</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col pt-5">
+            <h1>{% if status == 'actual' %}Тарифы{% else %}Архивные тарифы{% endif %}</h1>
+            <table class="table mt-4">
+                <tbody>
+                {% for tariff in tariffs %}
+                <tr>
+                    <td>
+                        <span class="d-block"><strong>{{tariff.name}}</strong></span>
+                        {% if tariff.price > 0 %}
+                            <span class="d-block">
+                                <span class="h1 d-inline-block"><strong>{{tariff.price}}</strong></span>
+
+                                <span class="d-inline-block">
+                                    <span class="d-block unit"><strong>₽</strong></span>
+                                    <span class="d-block period">/{{period_ru[tariff.price_period]}}</span>
+                                </span>
+                            </span>
+                        {% else %}
+                            <span class="d-block">Без абонентской платы</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if tariff.hit %}
+                        <span class="badge badge-warning">Хит<br>продаж</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if tariff.gb == -1 %}
+                            <span class="d-block"><strong>БЕЗЛИМИТНЫЙ<br>ИНТЕРНЕТ</strong></span>
+                        {% elif tariff.gb > 0%}
+                        <span class="h5"><strong>{{tariff.gb}}</strong> ГБ</span>
+                        {% endif %}
+                        {% if tariff.gb_unlim %}
+                            <span class="d-block">
+                                <span class="d-block">+безлимитные</span>
+                                <span class="d-block text-info">
+                                {% for item in tariff.gb_unlim %}
+                                    {{item}}{% if not loop.last %}, {% endif %}
+                                {% endfor %}
+                                </span>
+                            </span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if tariff.minutes %}
+                        <span class="d-block h5"><strong>{{tariff.minutes}}</strong> мин.</span>
+                        {% endif %}
+                        {% if tariff.minutes_unlim_tele2 %}
+                        <span>+безлимит на Tele2 России</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if tariff.sms %}
+                        <span class="h5">{{tariff.sms}} SMS</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="mb-5 text-center">
+                {% if status == 'actual'%}
+                <a href="{{url_for('archived')}}">смотреть архивные тарифы</a>
+                {% else %}
+                <a href="{{url_for('index')}}">смотреть актуальные тарифы</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
